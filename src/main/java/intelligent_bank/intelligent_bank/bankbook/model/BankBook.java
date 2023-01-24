@@ -15,13 +15,14 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+@Table(indexes = @Index(name = "idx_bankBookNum", columnList = "bankBookNum"))
 public class BankBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int bankBookNum;
+    private String bankBookNum;
 
     private long balance;
 
@@ -34,7 +35,7 @@ public class BankBook {
     private LocalDate createdDate;
 
     @Builder
-    public BankBook(Long id, int bankBookNum, long balance, Member member) {
+    public BankBook(Long id, String bankBookNum, long balance, Member member) {
         this.id = id;
         this.bankBookNum = bankBookNum;
         this.balance = balance;
