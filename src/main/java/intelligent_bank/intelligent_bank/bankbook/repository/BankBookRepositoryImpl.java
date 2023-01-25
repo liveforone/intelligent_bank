@@ -40,4 +40,22 @@ public class BankBookRepositoryImpl implements BankBookRepositoryCustom {
                 .where(bankBook.member.eq(member))
                 .execute();
     }
+
+    public void increaseBalance(String bankBookNum, long inputMoney) {
+        QBankBook bankBook = QBankBook.bankBook;
+
+        queryFactory.update(bankBook)
+                .set(bankBook.balance, bankBook.balance.add(inputMoney))
+                .where(bankBook.bankBookNum.eq(bankBookNum))
+                .execute();
+    }
+
+    public void decreaseBalance(String bankBookNum, long inputMoney) {
+        QBankBook bankBook = QBankBook.bankBook;
+
+        queryFactory.update(bankBook)
+                .set(bankBook.balance, bankBook.balance.add(-inputMoney))
+                .where(bankBook.bankBookNum.eq(bankBookNum))
+                .execute();
+    }
 }

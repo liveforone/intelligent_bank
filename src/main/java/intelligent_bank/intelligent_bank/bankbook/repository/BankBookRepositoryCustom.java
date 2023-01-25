@@ -9,4 +9,8 @@ public interface BankBookRepositoryCustom {
     BankBook findOneByBankBookNum(String bankBookNum);
 
     void suspendOneByMember(Member member);
+
+    void increaseBalance(String bankBookNum, long inputMoney);
+
+    void decreaseBalance(String bankBookNum, long inputMoney);
 }

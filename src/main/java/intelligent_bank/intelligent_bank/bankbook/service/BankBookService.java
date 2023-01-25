@@ -45,4 +45,14 @@ public class BankBookService {
     public void suspendBankBookByMember(Member member) {
         bankBookRepository.suspendOneByMember(member);
     }
+
+    @Transactional
+    public void increaseBalance(String bankBookNum, long inputMoney) {
+        bankBookRepository.increaseBalance(bankBookNum, inputMoney);
+    }
+
+    @Transactional
+    public void decreaseBalance(String bankBookNum, long inputMoney) {
+        bankBookRepository.decreaseBalance(bankBookNum, inputMoney);
+    }
 }
