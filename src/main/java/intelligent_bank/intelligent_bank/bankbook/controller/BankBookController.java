@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -56,5 +53,15 @@ public class BankBookController {
 
         String url = "/my-bank";
         return CommonUtils.makeResponseEntityForRedirect(url, request);
+    }
+
+    @PatchMapping("/bank/suspend")
+    public ResponseEntity<?> suspendBankBook(Principal principal) {
+        String email = principal.getName();
+        Member member = memberService.getMemberEntity(email);
+        bankBookService.suspendBankBookByMember(member);
+        log.info("통장 정지 성공");
+
+        return ResponseEntity.ok("통장이 성공적으로 정지 되었습니다.");
     }
 }

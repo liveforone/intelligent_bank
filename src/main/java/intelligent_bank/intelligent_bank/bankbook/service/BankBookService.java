@@ -35,4 +35,9 @@ public class BankBookService {
                 BankBookMapper.dtoToEntity(bankBookRequest)
         );
     }
+
+    @Transactional
+    public void suspendBankBookByMember(Member member) {
+        bankBookRepository.suspendOneByMember(member);
+    }
 }

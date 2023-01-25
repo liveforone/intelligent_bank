@@ -2,6 +2,7 @@ package intelligent_bank.intelligent_bank.bankbook.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
+import intelligent_bank.intelligent_bank.bankbook.model.BankBookState;
 import intelligent_bank.intelligent_bank.bankbook.model.QBankBook;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,14 @@ public class BankBookRepositoryImpl implements BankBookRepositoryCustom {
                 .join(bankBook.member).fetchJoin()
                 .where(bankBook.member.eq(member))
                 .fetchOne();
+    }
+
+    public void suspendOneByMember(Member member) {
+        QBankBook bankBook = QBankBook.bankBook;
+
+        queryFactory.update(bankBook)
+                .set(bankBook.bankBookState, BankBookState.SUSPEND)
+                .where(bankBook.member.eq(member))
+                .execute();
     }
 }
