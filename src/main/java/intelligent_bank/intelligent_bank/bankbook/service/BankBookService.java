@@ -1,7 +1,7 @@
 package intelligent_bank.intelligent_bank.bankbook.service;
 
 import intelligent_bank.intelligent_bank.bankbook.dto.BankBookRequest;
-import intelligent_bank.intelligent_bank.bankbook.dto.BankBookResponse;
+import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBookState;
 import intelligent_bank.intelligent_bank.bankbook.repository.BankBookRepository;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookMapper;
@@ -18,24 +18,23 @@ public class BankBookService {
 
     private final BankBookRepository bankBookRepository;
 
-    public BankBookResponse getBankBookByMember(Member member) {
-        return BankBookMapper.entityToDtoDetail(
-                bankBookRepository.findOneByMember(member)
-        );
+    public BankBook getBankBookByMember(Member member) {
+        return bankBookRepository.findOneByMember(member);
     }
 
-    public BankBookResponse getBankBookByBankBookNum(String bankBookNum) {
-        return BankBookMapper.entityToDtoDetail(
-                bankBookRepository.findOneByBankBookNum(bankBookNum)
-        );
+    public BankBook getBankBookByBankBookNum(String bankBookNum) {
+        return bankBookRepository.findOneByBankBookNum(bankBookNum);
     }
 
     @Transactional
-    public void saveBankBook(BankBookRequest bankBookRequest, Member member) {
+    public void saveBankBook(Member member) {
         String bankBookNum = RandomStringUtils.randomNumeric(13);
-        bankBookRequest.setBankBookNum(bankBookNum);
-        bankBookRequest.setMember(member);
-        bankBookRequest.setBankBookState(BankBookState.USE);
+
+        BankBookRequest bankBookRequest = BankBookRequest.builder()
+                .bankBookNum(bankBookNum)
+                .bankBookState(BankBookState.USE)
+                .member(member)
+                .build();
 
         bankBookRepository.save(
                 BankBookMapper.dtoToEntity(bankBookRequest)
