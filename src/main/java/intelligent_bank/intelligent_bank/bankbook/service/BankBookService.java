@@ -27,7 +27,7 @@ public class BankBookService {
     }
 
     @Transactional
-    public void saveBankBook(Member member) {
+    public String saveBankBook(Member member) {
         String bankBookNum = RandomStringUtils.randomNumeric(13);
 
         BankBookRequest bankBookRequest = BankBookRequest.builder()
@@ -36,9 +36,9 @@ public class BankBookService {
                 .member(member)
                 .build();
 
-        bankBookRepository.save(
+        return bankBookRepository.save(
                 BankBookMapper.dtoToEntity(bankBookRequest)
-        );
+        ).getBankBookNum();
     }
 
     @Transactional
