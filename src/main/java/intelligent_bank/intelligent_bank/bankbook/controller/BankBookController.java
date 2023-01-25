@@ -1,7 +1,10 @@
 package intelligent_bank.intelligent_bank.bankbook.controller;
 
+import intelligent_bank.intelligent_bank.bankbook.dto.BankBookResponse;
+import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
+import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +18,19 @@ import java.security.Principal;
 @Slf4j
 public class BankBookController {
 
+    private final BankBookService bankBookService;
     private final MemberService memberService;
 
     @GetMapping("/my-bank")
     public ResponseEntity<?> myBank(Principal principal) {
         String email = principal.getName();
         Member member = memberService.getMemberEntity(email);
-        //통장 찾기
-        //통장 없다면 통장 만들라고 말하기
-        //통장이 있다면 통장 리턴 + 멤버이름까지
+        BankBookResponse bankBook = bankBookService.getBankBookByMember(member);
+
+        if (CommonUtils.isNull(bankBook)) {
+            return ResponseEntity.ok("통장이 없습니다. \n통장을 개설하여주세요");
+        }
+
+        return ResponseEntity.ok(bankBook);
     }
 }
