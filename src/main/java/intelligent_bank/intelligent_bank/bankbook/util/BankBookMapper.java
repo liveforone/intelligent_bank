@@ -11,6 +11,7 @@ public class BankBookMapper {
                 .id(bankBookRequest.getId())
                 .bankBookNum(bankBookRequest.getBankBookNum())
                 .balance(bankBookRequest.getBalance())
+                .bankBookState(bankBookRequest.getBankBookState())
                 .member(bankBookRequest.getMember())
                 .build();
     }
@@ -20,6 +21,7 @@ public class BankBookMapper {
                 .id(bankBook.getId())
                 .bankBookNum(bankBook.getBankBookNum())
                 .balance(bankBook.getBalance())
+                .bankBookState(bankBook.getBankBookState())
                 .member(bankBook.getMember().getRealName())
                 .createdDate(bankBook.getCreatedDate())
                 .build();

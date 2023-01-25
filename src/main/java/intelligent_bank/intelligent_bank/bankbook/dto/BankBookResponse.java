@@ -1,6 +1,6 @@
 package intelligent_bank.intelligent_bank.bankbook.dto;
 
-import intelligent_bank.intelligent_bank.member.model.Member;
+import intelligent_bank.intelligent_bank.bankbook.model.BankBookState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +17,7 @@ public class BankBookResponse {
     private Long id;
     private String bankBookNum;
     private long balance;
+    private BankBookState bankBookState;
     private String member;
     private LocalDate createdDate;
 }

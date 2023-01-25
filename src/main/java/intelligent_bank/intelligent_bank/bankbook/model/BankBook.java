@@ -26,6 +26,9 @@ public class BankBook {
 
     private long balance;
 
+    @Enumerated(value = EnumType.STRING)
+    private BankBookState bankBookState;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -35,10 +38,11 @@ public class BankBook {
     private LocalDate createdDate;
 
     @Builder
-    public BankBook(Long id, String bankBookNum, long balance, Member member) {
+    public BankBook(Long id, String bankBookNum, long balance, BankBookState bankBookState, Member member) {
         this.id = id;
         this.bankBookNum = bankBookNum;
         this.balance = balance;
+        this.bankBookState = bankBookState;
         this.member = member;
     }
 }
