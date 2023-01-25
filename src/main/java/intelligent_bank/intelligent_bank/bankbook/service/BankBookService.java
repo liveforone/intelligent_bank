@@ -2,6 +2,7 @@ package intelligent_bank.intelligent_bank.bankbook.service;
 
 import intelligent_bank.intelligent_bank.bankbook.dto.BankBookRequest;
 import intelligent_bank.intelligent_bank.bankbook.dto.BankBookResponse;
+import intelligent_bank.intelligent_bank.bankbook.model.BankBookState;
 import intelligent_bank.intelligent_bank.bankbook.repository.BankBookRepository;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookMapper;
 import intelligent_bank.intelligent_bank.member.model.Member;
@@ -28,6 +29,7 @@ public class BankBookService {
         String bankBookNum = RandomStringUtils.randomNumeric(13);
         bankBookRequest.setBankBookNum(bankBookNum);
         bankBookRequest.setMember(member);
+        bankBookRequest.setBankBookState(BankBookState.USE);
 
         bankBookRepository.save(
                 BankBookMapper.dtoToEntity(bankBookRequest)
