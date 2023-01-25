@@ -23,6 +23,15 @@ public class BankBookRepositoryImpl implements BankBookRepositoryCustom {
                 .fetchOne();
     }
 
+    public BankBook findOneByBankBookNum(String bankBookNum) {
+        QBankBook bankBook = QBankBook.bankBook;
+
+        return queryFactory.selectFrom(bankBook)
+                .join(bankBook.member).fetchJoin()
+                .where(bankBook.bankBookNum.eq(bankBookNum))
+                .fetchOne();
+    }
+
     public void suspendOneByMember(Member member) {
         QBankBook bankBook = QBankBook.bankBook;
 

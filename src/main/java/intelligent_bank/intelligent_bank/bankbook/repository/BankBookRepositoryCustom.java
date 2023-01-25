@@ -6,5 +6,7 @@ import intelligent_bank.intelligent_bank.member.model.Member;
 public interface BankBookRepositoryCustom {
     BankBook findOneByMember(Member member);
 
+    BankBook findOneByBankBookNum(String bankBookNum);
+
     void suspendOneByMember(Member member);
 }

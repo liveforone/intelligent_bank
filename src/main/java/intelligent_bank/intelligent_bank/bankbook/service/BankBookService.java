@@ -24,6 +24,12 @@ public class BankBookService {
         );
     }
 
+    public BankBookResponse getBankBookByBankBookNum(String bankBookNum) {
+        return BankBookMapper.entityToDtoDetail(
+                bankBookRepository.findOneByBankBookNum(bankBookNum)
+        );
+    }
+
     @Transactional
     public void saveBankBook(BankBookRequest bankBookRequest, Member member) {
         String bankBookNum = RandomStringUtils.randomNumeric(13);
