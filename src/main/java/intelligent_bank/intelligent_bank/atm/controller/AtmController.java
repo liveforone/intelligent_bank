@@ -41,7 +41,8 @@ public class AtmController {
             return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
         }
 
-        atmService.depositAtm(atmRequest, requestBank);
+        long inputMoney = atmRequest.getInputMoney();
+        atmService.depositAtm(inputMoney, requestBank);
         log.info("ATM 입금 성공");
 
         return ResponseEntity.ok("ATM 입금에 성공하셨습니다");
@@ -66,7 +67,8 @@ public class AtmController {
             return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
         }
 
-        atmService.withdrawAtm(atmRequest, requestBank);
+        long inputMoney = atmRequest.getInputMoney();
+        atmService.withdrawAtm(inputMoney, requestBank);
         log.info("ATM 출금 성공");
 
         return ResponseEntity.ok("ATM 출금에 성공하셨습니다");

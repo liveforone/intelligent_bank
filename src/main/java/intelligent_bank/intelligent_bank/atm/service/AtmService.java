@@ -1,6 +1,5 @@
 package intelligent_bank.intelligent_bank.atm.service;
 
-import intelligent_bank.intelligent_bank.atm.dto.AtmRequest;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.repository.BankBookRepository;
 import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
@@ -20,8 +19,7 @@ public class AtmService {
     private final RecordRepository recordRepository;
 
     @Transactional
-    public void depositAtm(AtmRequest atmRequest, BankBook requestBank) {
-        long inputMoney = atmRequest.getInputMoney();
+    public void depositAtm(long inputMoney, BankBook requestBank) {
         String requestBankBookNum = requestBank.getBankBookNum();
 
         bankBookRepository.increaseBalance(
@@ -41,8 +39,7 @@ public class AtmService {
     }
 
     @Transactional
-    public void withdrawAtm(AtmRequest atmRequest, BankBook requestBank) {
-        long inputMoney = atmRequest.getInputMoney();
+    public void withdrawAtm(long inputMoney, BankBook requestBank) {
         String requestBankBookNum = requestBank.getBankBookNum();
 
         bankBookRepository.decreaseBalance(
