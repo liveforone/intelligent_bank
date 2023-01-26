@@ -1,7 +1,7 @@
-package intelligent_bank.intelligent_bank.atml.controller;
+package intelligent_bank.intelligent_bank.atm.controller;
 
-import intelligent_bank.intelligent_bank.atml.dto.AtmRequest;
-import intelligent_bank.intelligent_bank.atml.service.AtmService;
+import intelligent_bank.intelligent_bank.atm.dto.AtmRequest;
+import intelligent_bank.intelligent_bank.atm.service.AtmService;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;

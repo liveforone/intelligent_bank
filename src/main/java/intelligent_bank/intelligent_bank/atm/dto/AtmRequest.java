@@ -1,4 +1,4 @@
-package intelligent_bank.intelligent_bank.atml.dto;
+package intelligent_bank.intelligent_bank.atm.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
