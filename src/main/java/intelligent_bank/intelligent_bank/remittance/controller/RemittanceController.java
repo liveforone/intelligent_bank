@@ -2,6 +2,7 @@ package intelligent_bank.intelligent_bank.remittance.controller;
 
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
+import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
 import intelligent_bank.intelligent_bank.remittance.dto.RemittanceRequest;
@@ -34,6 +35,11 @@ public class RemittanceController {
         if (CommonUtils.isNull(requestBank)) {
             return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
         }
+
+        if (BankBookStateCheck.isSuspendBankBook(requestBank)) {
+            return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
+        }
+//        송금시 비밀번호 입력받기
 
         Member sender = memberService.getMemberEntity(principal.getName());
         remittanceService.remit(remittanceRequest, requestBank, sender);
