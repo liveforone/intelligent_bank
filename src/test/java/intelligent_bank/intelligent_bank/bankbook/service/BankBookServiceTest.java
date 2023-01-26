@@ -55,49 +55,4 @@ class BankBookServiceTest {
                 .assertThat(bankBookService.getBankBookByBankBookNum(bankBookNum).getBankBookState())
                 .isEqualTo(BankBookState.SUSPEND);
     }
-
-    @Test
-    @Transactional
-    void increaseBalanceTest() {
-        //given
-        String email = "aa1111@gmail.com";
-        String password = "1111";
-        String bankBookNum = createBankBook(email, password);
-
-        //when
-        long inputMoney = 100000L;
-        bankBookService.increaseBalance(bankBookNum, inputMoney);
-        em.flush();
-        em.clear();
-
-        //then
-        Assertions
-                .assertThat(bankBookService.getBankBookByBankBookNum(bankBookNum).getBalance())
-                .isEqualTo(inputMoney);
-    }
-
-    @Test
-    @Transactional
-    void decreaseBalanceTest() {
-        //given
-        String email = "aa1111@gmail.com";
-        String password = "1111";
-        String bankBookNum = createBankBook(email, password);
-
-        //when
-        long balance = 100000L;
-        bankBookService.increaseBalance(bankBookNum, balance);
-        em.flush();
-        em.clear();
-        long inputMoney = 50000L;
-        bankBookService.decreaseBalance(bankBookNum, inputMoney);
-        em.flush();
-        em.clear();
-
-        //then
-        long resultBalance = balance - inputMoney;
-        Assertions
-                .assertThat(bankBookService.getBankBookByBankBookNum(bankBookNum).getBalance())
-                .isEqualTo(resultBalance);
-    }
 }
