@@ -32,7 +32,7 @@ public class AtmController {
         }
 
         if (BankBookStateCheck.isSuspendBankBook(requestBank)) {
-            return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
+            return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 입금이 불가능합니다.");
         }
 
         String originalPassword = requestBank.getMember().getPassword();
@@ -45,5 +45,30 @@ public class AtmController {
         log.info("ATM 입금 성공");
 
         return ResponseEntity.ok("ATM 입금에 성공하셨습니다");
+    }
+
+    @PostMapping("/atm/withdraw")
+    public ResponseEntity<?> withdrawAtm(@RequestBody AtmRequest atmRequest) {
+        String requestBankBookNum = atmRequest.getBankBookNum();
+        BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
+
+        if (CommonUtils.isNull(requestBank)) {
+            return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
+        }
+
+        if (BankBookStateCheck.isSuspendBankBook(requestBank)) {
+            return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 출금이 불가능합니다.");
+        }
+
+        String originalPassword = requestBank.getMember().getPassword();
+        String inputPassword = atmRequest.getPassword();
+        if (MemberPassword.isNotMatchingPassword(inputPassword, originalPassword)) {
+            return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
+        }
+
+        atmService.withdrawAtm(atmRequest, requestBank);
+        log.info("ATM 출금 성공");
+
+        return ResponseEntity.ok("ATM 출금에 성공하셨습니다");
     }
 }

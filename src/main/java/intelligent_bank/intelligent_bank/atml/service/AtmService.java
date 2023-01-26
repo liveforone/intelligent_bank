@@ -39,4 +39,25 @@ public class AtmService {
                 RecordMapper.dtoToEntity(depositRequest)
         );
     }
+
+    @Transactional
+    public void withdrawAtm(AtmRequest atmRequest, BankBook requestBank) {
+        long inputMoney = atmRequest.getInputMoney();
+        String requestBankBookNum = requestBank.getBankBookNum();
+
+        bankBookRepository.decreaseBalance(
+                requestBankBookNum,
+                inputMoney
+        );
+        log.info("통장 번호 : " + requestBankBookNum + " ATM 출금 금액 : " + inputMoney);
+
+        RecordRequest withdrawRequest = RecordRequest.builder()
+                .title("[출금] ATM")
+                .money(-inputMoney)
+                .bankBook(requestBank)
+                .build();
+        recordRepository.save(
+                RecordMapper.dtoToEntity(withdrawRequest)
+        );
+    }
 }
