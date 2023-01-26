@@ -9,4 +9,5 @@ public class RemittanceRequest {
 
     private long inputMoney;
     private String bankBookNum;
+    private String password;
 }
