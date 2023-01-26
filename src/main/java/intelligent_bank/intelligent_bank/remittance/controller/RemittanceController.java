@@ -5,10 +5,12 @@ import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
+import intelligent_bank.intelligent_bank.member.util.MemberPassword;
 import intelligent_bank.intelligent_bank.remittance.dto.RemittanceRequest;
 import intelligent_bank.intelligent_bank.remittance.service.RemittanceService;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class RemittanceController {
 
     private final BankBookService bankBookService;
@@ -39,10 +42,15 @@ public class RemittanceController {
         if (BankBookStateCheck.isSuspendBankBook(requestBank)) {
             return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
         }
-//        송금시 비밀번호 입력받기
 
         Member sender = memberService.getMemberEntity(principal.getName());
+        String inputPassword = remittanceRequest.getPassword();
+        if (MemberPassword.isNotMatchingPassword(inputPassword, sender.getPassword())) {
+            return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
+        }
+
         remittanceService.remit(remittanceRequest, requestBank, sender);
+        log.info("송금 완료");
 
         return ResponseEntity.ok("송금 완료되었습니다.");
     }
