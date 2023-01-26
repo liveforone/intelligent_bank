@@ -49,7 +49,8 @@ public class RemittanceController {
             return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
         }
 
-        remittanceService.remit(remittanceRequest, requestBank, sender);
+        long inputMoney = remittanceRequest.getInputMoney();
+        remittanceService.remit(inputMoney, requestBank, sender);
         log.info("송금 완료");
 
         return ResponseEntity.ok("송금 완료되었습니다.");

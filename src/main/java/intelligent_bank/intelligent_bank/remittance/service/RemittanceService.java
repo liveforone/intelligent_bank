@@ -6,7 +6,6 @@ import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
 import intelligent_bank.intelligent_bank.record.repository.RecordRepository;
 import intelligent_bank.intelligent_bank.record.util.RecordMapper;
-import intelligent_bank.intelligent_bank.remittance.dto.RemittanceRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,7 @@ public class RemittanceService {
     private final RecordRepository recordRepository;
 
     @Transactional
-    public void remit(RemittanceRequest remittanceRequest, BankBook receiverBank, Member sender) {
-        long inputMoney = remittanceRequest.getInputMoney();
-
+    public void remit(long inputMoney, BankBook receiverBank, Member sender) {
         BankBook senderBank = bankBookRepository.findOneByMember(sender);
 
         remitAndRecordForSender(senderBank, receiverBank, inputMoney);
