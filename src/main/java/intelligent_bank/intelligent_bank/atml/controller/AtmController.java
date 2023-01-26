@@ -1,8 +1,17 @@
 package intelligent_bank.intelligent_bank.atml.controller;
 
+import intelligent_bank.intelligent_bank.atml.dto.AtmRequest;
 import intelligent_bank.intelligent_bank.atml.service.AtmService;
+import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
+import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
+import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;
+import intelligent_bank.intelligent_bank.member.util.MemberPassword;
+import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -10,5 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AtmController {
 
+    private final BankBookService bankBookService;
     private final AtmService atmService;
+
+    @PostMapping("/atm/deposit")
+    public ResponseEntity<?> depositAtm(@RequestBody AtmRequest atmRequest) {
+        String requestBankBookNum = atmRequest.getBankBookNum();
+        BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
+
+        if (CommonUtils.isNull(requestBank)) {
+            return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
+        }
+
+        if (BankBookStateCheck.isSuspendBankBook(requestBank)) {
+            return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
+        }
+
+        String originalPassword = requestBank.getMember().getPassword();
+        String inputPassword = atmRequest.getPassword();
+        if (MemberPassword.isNotMatchingPassword(inputPassword, originalPassword)) {
+            return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
+        }
+
+        atmService.depositAtm(atmRequest, requestBank);
+        log.info("ATM 입금 성공");
+
+        return ResponseEntity.ok("ATM 입금에 성공하셨습니다");
+    }
 }
