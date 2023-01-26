@@ -45,7 +45,7 @@ public class RemittanceService {
         log.info("통장 번호 : " + senderBankBankBookNum + "출금 금액 : " + inputMoney);
 
         RecordRequest senderRequest = RecordRequest.builder()
-                .title("[출금] " + receiverName + " 님")
+                .title("[출금] " + receiverName + "님")
                 .money(-inputMoney)
                 .bankBook(senderBank)
                 .build();
@@ -65,7 +65,7 @@ public class RemittanceService {
         log.info("통장 번호 : " + receiverBankBankBookNum + "입금 금액 : " + inputMoney);
 
         RecordRequest receiverRequest = RecordRequest.builder()
-                .title("[입금] " + senderName + " 님")
+                .title("[입금] " + senderName + "님")
                 .money(inputMoney)
                 .bankBook(receiverBank)
                 .build();
