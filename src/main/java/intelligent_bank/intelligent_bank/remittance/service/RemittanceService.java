@@ -21,14 +21,10 @@ public class RemittanceService {
     private final RecordRepository recordRepository;
 
     @Transactional
-    public void remit(RemittanceRequest remittanceRequest, Member sender) {
-        String receiverBankBookNum = remittanceRequest.getBankBookNum();
+    public void remit(RemittanceRequest remittanceRequest, BankBook receiverBank, Member sender) {
         long inputMoney = remittanceRequest.getInputMoney();
 
         BankBook senderBank = bankBookRepository.findOneByMember(sender);
-        BankBook receiverBank = bankBookRepository.findOneByBankBookNum(
-                receiverBankBookNum
-        );
 
         remitAndRecordForSender(senderBank, receiverBank, inputMoney);
         remitAndRecordForReceiver(senderBank, receiverBank, inputMoney);
