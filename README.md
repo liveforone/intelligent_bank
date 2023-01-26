@@ -30,7 +30,7 @@
 * [통장시스템](https://github.com/liveforone/intelligent_bank/wiki/%ED%86%B5%EC%9E%A5-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [거래내역시스템](https://github.com/liveforone/intelligent_bank/wiki/%EA%B1%B0%EB%9E%98%EB%82%B4%EC%97%AD-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [송금시스템](https://github.com/liveforone/intelligent_bank/wiki/%EC%86%A1%EA%B8%88-%EC%8B%9C%EC%8A%A4%ED%85%9C)
-* [ATM시스템]()
+* [ATM시스템](https://github.com/liveforone/intelligent_bank/wiki/ATM-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [대출시스템]()
 * [정산시스템]()
 ### d. 데이터 베이스 설계
@@ -54,8 +54,8 @@
 * [문서화 가이드](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/l.%20%EB%AC%B8%EC%84%9C%ED%99%94%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
 
 [db설계]
-* 인덱스를 적극 사용하되, 4개 이상 걸지 말아라.
-erd 넣기
+erd 넣기 
+인덱스를 적극 사용하되, 4개 이상 걸지 말아라.
 쿼리를 직접 날리는 방식으로 변경(none)
 결국 시간이 지날수록 좋은 개발자란
 응용을 잘하고, 좋은 설게를 할줄아는것.
@@ -63,9 +63,8 @@ erd 넣기
 이는 ai가 나와도 살아남고 ai를 잘 응용할수있는 개발자라 생각함.
 설계(세세한)는 개발자의 가장 큰 덕목임.
 따라서 db는 직접 제작한다. create-drop으로 설정해서 만들고나면 무조건 지운다.
-☆인덱스는 직접 걸지 아니면 코드로 걸지 생각해보기.
 
-[atm]
+송금 + atm 테스트코드
 
 [대출]
 금융상품(=대출) -> 자동이체로 자동 출금(이자붙여서)
@@ -81,9 +80,5 @@ erd 넣기
 입금된돈 - 출금된돈 = 이자를 붙일 돈
 이 돈의 1퍼센트를 통장에 입금시켜준다.
 
-member
-bankbook : 통장
-remittance : 송금
-atm
 loan
 calculate : 정산
