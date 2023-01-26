@@ -28,9 +28,8 @@
 ### c. 도메인별 위키
 * [회원시스템](https://github.com/liveforone/intelligent_bank/wiki/%ED%9A%8C%EC%9B%90%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [통장시스템](https://github.com/liveforone/intelligent_bank/wiki/%ED%86%B5%EC%9E%A5-%EC%8B%9C%EC%8A%A4%ED%85%9C)
-* [거래내역시스템]()
-* [알림시스템]()
-* [송금시스템]()
+* [거래내역시스템](https://github.com/liveforone/intelligent_bank/wiki/%EA%B1%B0%EB%9E%98%EB%82%B4%EC%97%AD-%EC%8B%9C%EC%8A%A4%ED%85%9C)
+* [송금시스템](https://github.com/liveforone/intelligent_bank/wiki/%EC%86%A1%EA%B8%88-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [ATM시스템]()
 * [대출시스템]()
 * [정산시스템]()
@@ -66,27 +65,6 @@ erd 넣기
 따라서 db는 직접 제작한다. create-drop으로 설정해서 만들고나면 무조건 지운다.
 ☆인덱스는 직접 걸지 아니면 코드로 걸지 생각해보기.
 
-로그를 잘찍기. 얼마가 오갔는지 로그를 확실하게 남겨라
-
-
-[거래내역]
-입/출금 날짜
-title이 존재하며 atm일경우 atm을 붙이기
-입금이라면 +
-출금이라면 - 붙여서 로그 보여주기
-
-[알림]
-알림 시스템으로 입금, 출금시 알림 보내고,
-알림을 클릭해서 상세조회, 즉 확인을 하게되면 삭제된다.
-또한 어드민이 알림을 직접 만들 수 있다.(공지)
-이도 위와 마찬가지로 작동한다.
-
-[송금]
-정지된 통장인지 확인
-
-송금(뱅킹)(보내는자와 받는자)
-송금시 비밀번호 입력받기
-
 [atm]
 
 [대출]
@@ -105,12 +83,7 @@ title이 존재하며 atm일경우 atm을 붙이기
 
 member
 bankbook : 통장
-notice : 알림
 remittance : 송금
 atm
 loan
 calculate : 정산
-
-[통장이 외부에 제공]
-1. 잔액 plus, minus 메서드 제공
-2. 통장 번호로 통장 찾는 메서드 제공
