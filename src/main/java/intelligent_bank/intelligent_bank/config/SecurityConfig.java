@@ -38,7 +38,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/",
                                 "/member/signup",
-                                "/member/login"
+                                "/member/login",
+                                "/atm/deposit",
+                                "/atm/withdraw"
                         ).permitAll()
                         .requestMatchers(
                                 "/admin/**"
