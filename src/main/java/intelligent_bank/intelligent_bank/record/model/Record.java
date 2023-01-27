@@ -36,6 +36,7 @@ public class Record {
     @Column(updatable = false)
     private int createdYear;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(updatable = false)
     private Month createdMonth;
 
