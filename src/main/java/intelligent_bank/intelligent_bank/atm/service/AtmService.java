@@ -6,6 +6,7 @@ import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
 import intelligent_bank.intelligent_bank.record.model.RecordState;
 import intelligent_bank.intelligent_bank.record.repository.RecordRepository;
 import intelligent_bank.intelligent_bank.record.util.RecordMapper;
+import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public class AtmService {
                 .money(inputMoney)
                 .recordState(RecordState.INCOME)
                 .bankBook(requestBank)
+                .createdYear(CommonUtils.createNowYear())
+                .createdMonth(CommonUtils.createNowMonth())
                 .build();
         recordRepository.save(
                 RecordMapper.dtoToEntity(depositRequest)
@@ -55,6 +58,8 @@ public class AtmService {
                 .money(-inputMoney)
                 .recordState(RecordState.EXPENSE)
                 .bankBook(requestBank)
+                .createdYear(CommonUtils.createNowYear())
+                .createdMonth(CommonUtils.createNowMonth())
                 .build();
         recordRepository.save(
                 RecordMapper.dtoToEntity(withdrawRequest)

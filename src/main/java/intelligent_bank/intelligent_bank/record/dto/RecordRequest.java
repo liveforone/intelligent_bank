@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Month;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,4 +20,6 @@ public class RecordRequest {
     private long money;
     private RecordState recordState;
     private BankBook bankBook;
+    private int createdYear;
+    private Month createdMonth;
 }
