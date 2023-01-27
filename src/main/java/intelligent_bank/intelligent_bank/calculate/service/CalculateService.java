@@ -5,7 +5,10 @@ import intelligent_bank.intelligent_bank.bankbook.repository.BankBookRepository;
 import intelligent_bank.intelligent_bank.calculate.dto.CalculateResponse;
 import intelligent_bank.intelligent_bank.calculate.util.CalculateMapper;
 import intelligent_bank.intelligent_bank.member.model.Member;
+import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
+import intelligent_bank.intelligent_bank.record.model.RecordState;
 import intelligent_bank.intelligent_bank.record.repository.RecordRepository;
+import intelligent_bank.intelligent_bank.record.util.RecordMapper;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +91,18 @@ public class CalculateService {
             long interest = (long) (profit * 0.01);
             bankBookRepository.increaseBalance(bankBookNum, interest);
             log.info("이자 정산 완료");
+
+            RecordRequest depositRequest = RecordRequest.builder()
+                    .title("[입금] 연 이자 지급")
+                    .money(interest)
+                    .recordState(RecordState.INCOME)
+                    .bankBook(bankBook)
+                    .createdYear(CommonUtils.createNowYear())
+                    .createdMonth(CommonUtils.createNowMonth())
+                    .build();
+            recordRepository.save(
+                    RecordMapper.dtoToEntity(depositRequest)
+            );
         }
     }
 }
