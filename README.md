@@ -31,7 +31,7 @@
 * [거래내역시스템](https://github.com/liveforone/intelligent_bank/wiki/%EA%B1%B0%EB%9E%98%EB%82%B4%EC%97%AD-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [송금시스템](https://github.com/liveforone/intelligent_bank/wiki/%EC%86%A1%EA%B8%88-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 * [ATM시스템](https://github.com/liveforone/intelligent_bank/wiki/ATM-%EC%8B%9C%EC%8A%A4%ED%85%9C)
-* [정산통계시스템]()
+* [정산통계시스템](https://github.com/liveforone/intelligent_bank/wiki/%EC%A0%95%EC%82%B0-%ED%86%B5%EA%B3%84-%EC%8B%9C%EC%8A%A4%ED%85%9C)
 ### d. 데이터 베이스 설계
 * [데이터 베이스 설계 위키](https://github.com/liveforone/intelligent_bank/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A4%EA%B3%84-%EB%B0%8F-%EC%9B%90%EC%B9%99)
 ### e. 고민한 점
@@ -52,31 +52,3 @@
 * [좋은 테스트 코드](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/j.%20%EC%A2%8B%EC%9D%80%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%BD%94%EB%93%9C.md)
 * [명시적 프로그래밍](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/k.%20%EB%AA%85%EC%8B%9C%EC%A0%81%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
 * [문서화 가이드](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/l.%20%EB%AC%B8%EC%84%9C%ED%99%94%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
-
-
-[통계]
-인덱스 걸기
-
-나의 통계 페이지 접속
-이번달 지출 한 돈
-이번달 수입 한 돈 
-
-total 통계 접속
-지금까지의 지출 한 돈
-지금까지의 수입 한 돈
-
-해의 마지막에는 이자를 주는데, 이자는 이자 신청 페이지에서 할 수 있다.
-이자 신청페이지는 12월 1일부터 31일까지 가능하며,
-1월부터 11월까지의 이자를 붙여준다.
-입금된돈 - 출금된돈 = 이자를 붙일 돈
-이 돈의 1퍼센트를 통장에 입금시켜준다.
-
-통계 시스템을 만들면서 느낀건,
-통계를 짜려면 상당히 세부적으로 DB에 저장되어있어야한다는 것을 배웠다.
-날짜를 저장할때 년, 월, 일을 한번에 DB에 저장하는 그런 timestamp 같이 저장하는게 아니라
-년 따로 월 따로 일따로 저장해야한다는 것을 느꼈다.
-그래야 통계를 내기 쉽고, 인덱스도 태우기 쉽고, 무엇보다 조건을 걸기 쉽다는 것을 알았기 때문이다.
-장소를 예로들면 도, 시, 군, 구 등으로 세부적으로 분류해서 저장하는것이 저장 공간은 많이 소모하더라더
-나중에 세부적으로 검색을 걸거나 인덱스를 태우거나, 통계를 내기에 좋은 것 같다.
-앞으로 통계가 필요한 테이블이나, 검색 조건이 복잡한 테이블들은 DB 공간을 조금 더 소모하더라도
-세부적으로 컬럼을 쪼개는 것으로 한다. -> 스타일 가이드 작성
