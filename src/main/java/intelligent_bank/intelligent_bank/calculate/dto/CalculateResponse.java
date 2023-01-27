@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CalculateResponse {
 
-    private long expense;
-    private long income;
+    private Long expense;
+    private Long income;
 }
