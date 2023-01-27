@@ -66,4 +66,27 @@ public class CalculateService {
 
         return CalculateMapper.dtoBuilder(sumExpense, sumIncome);
     }
+
+    @Transactional
+    public void addInterest(Member member) {
+        BankBook bankBook = bankBookRepository.findOneByMember(member);
+        int nowYear = CommonUtils.createNowYear();
+
+        Long sumExpense = recordRepository.calculateThisYearExpense(
+                bankBook,
+                nowYear
+        );
+        Long sumIncome = recordRepository.calculateThisYearIncome(
+                bankBook,
+                nowYear
+        );
+
+        String bankBookNum = bankBook.getBankBookNum();
+        long profit =  sumIncome - sumExpense;
+
+        if (profit > 0) {
+            long interest = (long) (profit * 0.1);
+            bankBookRepository.increaseBalance(bankBookNum, interest);
+        }
+    }
 }
