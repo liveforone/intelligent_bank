@@ -82,11 +82,12 @@ public class CalculateService {
         );
 
         String bankBookNum = bankBook.getBankBookNum();
-        long profit =  sumIncome - sumExpense;
+        long profit =  sumIncome + sumExpense;
 
         if (profit > 0) {
-            long interest = (long) (profit * 0.1);
+            long interest = (long) (profit * 0.01);
             bankBookRepository.increaseBalance(bankBookNum, interest);
+            log.info("이자 정산 완료");
         }
     }
 }
