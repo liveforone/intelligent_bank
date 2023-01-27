@@ -14,4 +14,12 @@ public interface RecordRepositoryCustom {
     Long calculateThisMonthExpense(BankBook bankBook, int nowYear, Month nowMonth);
 
     Long calculateThisMonthIncome(BankBook bankBook, int nowYear, Month nowMonth);
+
+    Long calculateThisYearExpense(BankBook bankBook, int nowYear);
+
+    Long calculateThisYearIncome(BankBook bankBook, int nowYear);
+
+    Long calculateTotalExpense(BankBook bankBook);
+
+    Long calculateTotalIncome(BankBook bankBook);
 }

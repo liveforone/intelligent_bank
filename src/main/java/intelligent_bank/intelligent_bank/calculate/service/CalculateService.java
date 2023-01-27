@@ -43,5 +43,33 @@ public class CalculateService {
         return CalculateMapper.dtoBuilder(sumExpense, sumIncome);
     }
 
-    //총 지출 - total 통계
+    public CalculateResponse calculateThisYear(Member member) {
+        BankBook bankBook = bankBookRepository.findOneByMember(member);
+        int nowYear = CommonUtils.createNowYear();
+
+        Long sumExpense = recordRepository.calculateThisYearExpense(
+                bankBook,
+                nowYear
+        );
+        Long sumIncome = recordRepository.calculateThisYearIncome(
+                bankBook,
+                nowYear
+        );
+
+        return CalculateMapper.dtoBuilder(sumExpense, sumIncome);
+    }
+
+    public CalculateResponse calculateTotal(Member member) {
+        BankBook bankBook = bankBookRepository.findOneByMember(member);
+        int nowYear = CommonUtils.createNowYear();
+
+        Long sumExpense = recordRepository.calculateTotalExpense(
+                bankBook
+        );
+        Long sumIncome = recordRepository.calculateTotalIncome(
+                bankBook
+        );
+
+        return CalculateMapper.dtoBuilder(sumExpense, sumIncome);
+    }
 }

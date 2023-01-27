@@ -66,4 +66,58 @@ public class RecordRepositoryImpl implements RecordRepositoryCustom {
                 )
                 .fetchOne();
     }
+
+    public Long calculateThisYearExpense(BankBook bankBook, int nowYear) {
+        QRecord record = QRecord.record;
+
+        return queryFactory.select(record.money.sum())
+                .from(record)
+                .join(record.bankBook)
+                .where(
+                        record.bankBook.eq(bankBook),
+                        record.recordState.eq(RecordState.EXPENSE),
+                        record.createdYear.eq(nowYear)
+                )
+                .fetchOne();
+    }
+
+    public Long calculateThisYearIncome(BankBook bankBook, int nowYear) {
+        QRecord record = QRecord.record;
+
+        return queryFactory.select(record.money.sum())
+                .from(record)
+                .join(record.bankBook)
+                .where(
+                        record.bankBook.eq(bankBook),
+                        record.recordState.eq(RecordState.INCOME),
+                        record.createdYear.eq(nowYear)
+                )
+                .fetchOne();
+    }
+
+    public Long calculateTotalExpense(BankBook bankBook) {
+        QRecord record = QRecord.record;
+
+        return queryFactory.select(record.money.sum())
+                .from(record)
+                .join(record.bankBook)
+                .where(
+                        record.bankBook.eq(bankBook),
+                        record.recordState.eq(RecordState.EXPENSE)
+                )
+                .fetchOne();
+    }
+
+    public Long calculateTotalIncome(BankBook bankBook) {
+        QRecord record = QRecord.record;
+
+        return queryFactory.select(record.money.sum())
+                .from(record)
+                .join(record.bankBook)
+                .where(
+                        record.bankBook.eq(bankBook),
+                        record.recordState.eq(RecordState.INCOME)
+                )
+                .fetchOne();
+    }
 }

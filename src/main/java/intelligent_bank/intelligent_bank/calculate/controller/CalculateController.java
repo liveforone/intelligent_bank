@@ -28,4 +28,22 @@ public class CalculateController {
         CalculateResponse calculateThisMonth = calculateService.calculateThisMonth(member);
         return ResponseEntity.ok(calculateThisMonth);
     }
+
+    @GetMapping("/my-calculate/year")
+    public ResponseEntity<?> calculateThisYear(Principal principal) {
+        String email = principal.getName();
+        Member member = memberService.getMemberEntity(email);
+
+        CalculateResponse calculateThisYear = calculateService.calculateThisYear(member);
+        return ResponseEntity.ok(calculateThisYear);
+    }
+
+    @GetMapping("/my-calculate/total")
+    public ResponseEntity<?> calculateTotal(Principal principal) {
+        String email = principal.getName();
+        Member member = memberService.getMemberEntity(email);
+
+        CalculateResponse calculateTotal = calculateService.calculateTotal(member);
+        return ResponseEntity.ok(calculateTotal);
+    }
 }
