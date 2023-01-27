@@ -9,7 +9,6 @@ import intelligent_bank.intelligent_bank.record.repository.RecordRepository;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,14 +60,9 @@ public class CalculateService {
 
     public CalculateResponse calculateTotal(Member member) {
         BankBook bankBook = bankBookRepository.findOneByMember(member);
-        int nowYear = CommonUtils.createNowYear();
 
-        Long sumExpense = recordRepository.calculateTotalExpense(
-                bankBook
-        );
-        Long sumIncome = recordRepository.calculateTotalIncome(
-                bankBook
-        );
+        Long sumExpense = recordRepository.calculateTotalExpense(bankBook);
+        Long sumIncome = recordRepository.calculateTotalIncome(bankBook);
 
         return CalculateMapper.dtoBuilder(sumExpense, sumIncome);
     }
