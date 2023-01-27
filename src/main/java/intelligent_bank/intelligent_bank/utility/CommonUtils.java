@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 public class CommonUtils {
@@ -45,5 +47,13 @@ public class CommonUtils {
                 .status(HttpStatus.MOVED_PERMANENTLY)
                 .headers(httpHeaders)
                 .build();
+    }
+
+    public static int createNowYear() {
+        return LocalDate.now().getYear();
+    }
+
+    public static Month createNowMonth() {
+        return LocalDate.now().getMonth();
     }
 }

@@ -14,6 +14,8 @@ public class RecordMapper {
                 .money(recordRequest.getMoney())
                 .recordState(recordRequest.getRecordState())
                 .bankBook(recordRequest.getBankBook())
+                .createdYear(recordRequest.getCreatedYear())
+                .createdMonth(recordRequest.getCreatedMonth())
                 .build();
     }
 
