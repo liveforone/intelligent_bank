@@ -12,6 +12,7 @@ public class RecordMapper {
                 .id(recordRequest.getId())
                 .title(recordRequest.getTitle())
                 .money(recordRequest.getMoney())
+                .recordState(recordRequest.getRecordState())
                 .bankBook(recordRequest.getBankBook())
                 .build();
     }
@@ -21,6 +22,7 @@ public class RecordMapper {
                 .id(record.getId())
                 .title(record.getTitle())
                 .money(record.getMoney())
+                .recordState(record.getRecordState())
                 .createdDate(record.getCreatedDate())
                 .build();
     }

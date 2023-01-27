@@ -4,6 +4,7 @@ import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.repository.BankBookRepository;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
+import intelligent_bank.intelligent_bank.record.model.RecordState;
 import intelligent_bank.intelligent_bank.record.repository.RecordRepository;
 import intelligent_bank.intelligent_bank.record.util.RecordMapper;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class RemittanceService {
         RecordRequest senderRequest = RecordRequest.builder()
                 .title("[출금] " + receiverName + "님")
                 .money(-inputMoney)
+                .recordState(RecordState.EXPENSE)
                 .bankBook(senderBank)
                 .build();
         recordRepository.save(
@@ -60,6 +62,7 @@ public class RemittanceService {
         RecordRequest receiverRequest = RecordRequest.builder()
                 .title("[입금] " + senderName + "님")
                 .money(inputMoney)
+                .recordState(RecordState.INCOME)
                 .bankBook(receiverBank)
                 .build();
         recordRepository.save(

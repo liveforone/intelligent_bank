@@ -25,6 +25,9 @@ public class Record {
 
     private long money;
 
+    @Enumerated(value = EnumType.STRING)
+    private RecordState recordState;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_book_id")
     private BankBook bankBook;
@@ -34,10 +37,11 @@ public class Record {
     private LocalDateTime createdDate;
 
     @Builder
-    public Record(Long id, String title, long money, BankBook bankBook) {
+    public Record(Long id, String title, long money, RecordState recordState, BankBook bankBook) {
         this.id = id;
         this.title = title;
         this.money = money;
+        this.recordState = recordState;
         this.bankBook = bankBook;
     }
 }

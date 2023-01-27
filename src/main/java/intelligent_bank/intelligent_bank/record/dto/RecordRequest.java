@@ -1,6 +1,7 @@
 package intelligent_bank.intelligent_bank.record.dto;
 
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
+import intelligent_bank.intelligent_bank.record.model.RecordState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class RecordRequest {
     private Long id;
     private String title;
     private long money;
+    private RecordState recordState;
     private BankBook bankBook;
 }
