@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(indexes = @Index(name = "idx_bankBookNum", columnList = "bankBookNum"))
 public class BankBook {
 
     @Id
