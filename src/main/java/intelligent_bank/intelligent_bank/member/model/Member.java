@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(indexes = @Index(name = "idx_email", columnList = "email"))
 public class Member implements UserDetails {
 
     @Id
