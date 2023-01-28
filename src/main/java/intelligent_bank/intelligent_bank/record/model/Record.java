@@ -16,9 +16,6 @@ import java.time.Month;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(indexes = {
-        @Index(columnList = "bank_book_id, recordState, createdYear, createdMonth")
-})
 public class Record {
 
     @Id
