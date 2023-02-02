@@ -29,9 +29,9 @@ public class RecordRepositoryImpl implements RecordRepositoryCustom {
         List<Record> content = queryFactory.selectFrom(record)
                 .join(record.bankBook, bankBook)
                 .where(bankBook.member.eq(member))
+                .orderBy(record.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(record.id.desc())
                 .fetch();
 
         return new PageImpl<>(content, pageable, content.size());
