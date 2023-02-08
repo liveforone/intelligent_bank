@@ -1,5 +1,6 @@
 package intelligent_bank.intelligent_bank.record.controller;
 
+import intelligent_bank.intelligent_bank.aop.stopwatch.LogExecutionTime;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
 import intelligent_bank.intelligent_bank.record.dto.RecordResponse;
@@ -26,6 +27,7 @@ public class RecordController {
     private final MemberService memberService;
 
     @GetMapping("/my-record")
+    @LogExecutionTime
     public ResponseEntity<?> getMyRecord(
             @PageableDefault(page = 0, size = 10)
             @SortDefault.SortDefaults({
