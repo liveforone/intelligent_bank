@@ -1,5 +1,6 @@
 package intelligent_bank.intelligent_bank.atm.controller;
 
+import intelligent_bank.intelligent_bank.aop.stopwatch.LogExecutionTime;
 import intelligent_bank.intelligent_bank.atm.dto.AtmRequest;
 import intelligent_bank.intelligent_bank.atm.service.AtmService;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
@@ -23,6 +24,7 @@ public class AtmController {
     private final AtmService atmService;
 
     @PostMapping("/atm/deposit")
+    @LogExecutionTime
     public ResponseEntity<?> depositAtm(@RequestBody AtmRequest atmRequest) {
         String requestBankBookNum = atmRequest.getBankBookNum();
         BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
@@ -49,6 +51,7 @@ public class AtmController {
     }
 
     @PostMapping("/atm/withdraw")
+    @LogExecutionTime
     public ResponseEntity<?> withdrawAtm(@RequestBody AtmRequest atmRequest) {
         String requestBankBookNum = atmRequest.getBankBookNum();
         BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
