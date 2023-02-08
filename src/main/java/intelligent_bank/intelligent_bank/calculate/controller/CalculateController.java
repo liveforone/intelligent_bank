@@ -1,5 +1,6 @@
 package intelligent_bank.intelligent_bank.calculate.controller;
 
+import intelligent_bank.intelligent_bank.aop.stopwatch.LogExecutionTime;
 import intelligent_bank.intelligent_bank.calculate.dto.CalculateResponse;
 import intelligent_bank.intelligent_bank.calculate.service.CalculateService;
 import intelligent_bank.intelligent_bank.member.model.Member;
@@ -24,6 +25,7 @@ public class CalculateController {
     private final MemberService memberService;
 
     @GetMapping("/my-calculate/month")
+    @LogExecutionTime
     public ResponseEntity<?> calculateThisMonth(Principal principal) {
         String email = principal.getName();
         Member member = memberService.getMemberEntity(email);
@@ -33,6 +35,7 @@ public class CalculateController {
     }
 
     @GetMapping("/my-calculate/year")
+    @LogExecutionTime
     public ResponseEntity<?> calculateThisYear(Principal principal) {
         String email = principal.getName();
         Member member = memberService.getMemberEntity(email);
@@ -42,6 +45,7 @@ public class CalculateController {
     }
 
     @GetMapping("/my-calculate/total")
+    @LogExecutionTime
     public ResponseEntity<?> calculateTotal(Principal principal) {
         String email = principal.getName();
         Member member = memberService.getMemberEntity(email);
