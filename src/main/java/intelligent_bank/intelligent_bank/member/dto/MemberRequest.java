@@ -1,6 +1,7 @@
 package intelligent_bank.intelligent_bank.member.dto;
 
 import intelligent_bank.intelligent_bank.member.model.Role;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ public class MemberRequest {
 
     private Long id;
 
-    @NotBlank
+    @Email
     private String email;
 
     @NotBlank

@@ -1,5 +1,6 @@
 package intelligent_bank.intelligent_bank.member.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChangeEmailRequest {
 
-    @NotBlank
+    @Email
     private String email;
 
     @NotBlank
