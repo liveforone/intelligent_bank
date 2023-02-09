@@ -3,7 +3,7 @@ package intelligent_bank.intelligent_bank.calculate.service;
 import intelligent_bank.intelligent_bank.atm.service.AtmService;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
-import intelligent_bank.intelligent_bank.member.dto.MemberRequest;
+import intelligent_bank.intelligent_bank.member.dto.MemberSignupRequest;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
 import jakarta.persistence.EntityManager;
@@ -32,11 +32,11 @@ class CalculateServiceTest {
     EntityManager em;
 
     String createBankBook(String email, String password) {
-        MemberRequest memberRequest = new MemberRequest();
-        memberRequest.setEmail(email);
-        memberRequest.setPassword(password);
-        memberRequest.setRealName("test_member");
-        memberService.signup(memberRequest);
+        MemberSignupRequest memberSignupRequest = new MemberSignupRequest();
+        memberSignupRequest.setEmail(email);
+        memberSignupRequest.setPassword(password);
+        memberSignupRequest.setRealName("test_member");
+        memberService.signup(memberSignupRequest);
         em.flush();
         em.clear();
 

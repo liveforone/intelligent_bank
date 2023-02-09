@@ -1,18 +1,18 @@
 package intelligent_bank.intelligent_bank.member.util;
 
-import intelligent_bank.intelligent_bank.member.dto.MemberRequest;
+import intelligent_bank.intelligent_bank.member.dto.MemberSignupRequest;
 import intelligent_bank.intelligent_bank.member.dto.MemberResponse;
 import intelligent_bank.intelligent_bank.member.model.Member;
 
 public class MemberMapper {
 
-    public static Member dtoToEntity(MemberRequest memberRequest) {
+    public static Member dtoToEntity(MemberSignupRequest memberSignupRequest) {
         return Member.builder()
-                .id(memberRequest.getId())
-                .email(memberRequest.getEmail())
-                .password(memberRequest.getPassword())
-                .realName(memberRequest.getRealName())
-                .auth(memberRequest.getAuth())
+                .id(memberSignupRequest.getId())
+                .email(memberSignupRequest.getEmail())
+                .password(memberSignupRequest.getPassword())
+                .realName(memberSignupRequest.getRealName())
+                .auth(memberSignupRequest.getAuth())
                 .build();
     }
 

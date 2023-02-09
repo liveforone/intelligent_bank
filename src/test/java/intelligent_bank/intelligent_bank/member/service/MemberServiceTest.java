@@ -1,6 +1,6 @@
 package intelligent_bank.intelligent_bank.member.service;
 
-import intelligent_bank.intelligent_bank.member.dto.MemberRequest;
+import intelligent_bank.intelligent_bank.member.dto.MemberSignupRequest;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.model.Role;
 import intelligent_bank.intelligent_bank.member.util.MemberPassword;
@@ -21,11 +21,11 @@ class MemberServiceTest {
     EntityManager em;
 
     void createMember(String email, String password) {
-        MemberRequest memberRequest = new MemberRequest();
-        memberRequest.setEmail(email);
-        memberRequest.setPassword(password);
-        memberRequest.setRealName("test_member");
-        memberService.signup(memberRequest);
+        MemberSignupRequest memberSignupRequest = new MemberSignupRequest();
+        memberSignupRequest.setEmail(email);
+        memberSignupRequest.setPassword(password);
+        memberSignupRequest.setRealName("test_member");
+        memberService.signup(memberSignupRequest);
         em.flush();
         em.clear();
     }
@@ -37,13 +37,13 @@ class MemberServiceTest {
         String email = "admin@intelligentBank.com";
         String password = "1111";
         String realName = "test_admin";
-        MemberRequest memberRequest = new MemberRequest();
-        memberRequest.setEmail(email);
-        memberRequest.setPassword(password);
-        memberRequest.setRealName(realName);
+        MemberSignupRequest memberSignupRequest = new MemberSignupRequest();
+        memberSignupRequest.setEmail(email);
+        memberSignupRequest.setPassword(password);
+        memberSignupRequest.setRealName(realName);
 
         //when
-        memberService.signup(memberRequest);
+        memberService.signup(memberSignupRequest);
         em.flush();
         em.clear();
 

@@ -2,7 +2,8 @@ package intelligent_bank.intelligent_bank.member.service;
 
 import intelligent_bank.intelligent_bank.jwt.JwtTokenProvider;
 import intelligent_bank.intelligent_bank.jwt.TokenInfo;
-import intelligent_bank.intelligent_bank.member.dto.MemberRequest;
+import intelligent_bank.intelligent_bank.member.dto.MemberLoginRequest;
+import intelligent_bank.intelligent_bank.member.dto.MemberSignupRequest;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.model.Role;
 import intelligent_bank.intelligent_bank.member.repository.MemberRepository;
@@ -40,24 +41,24 @@ public class MemberService {
     }
 
     @Transactional
-    public void signup(MemberRequest memberRequest) {
-        memberRequest.setPassword(
-                MemberPassword.encodePassword(memberRequest.getPassword())
+    public void signup(MemberSignupRequest memberSignupRequest) {
+        memberSignupRequest.setPassword(
+                MemberPassword.encodePassword(memberSignupRequest.getPassword())
         );
 
-        if (Objects.equals(memberRequest.getEmail(), "admin@intelligentBank.com")) {
-            memberRequest.setAuth(Role.ADMIN);
+        if (Objects.equals(memberSignupRequest.getEmail(), "admin@intelligentBank.com")) {
+            memberSignupRequest.setAuth(Role.ADMIN);
         } else {
-            memberRequest.setAuth(Role.MEMBER);
+            memberSignupRequest.setAuth(Role.MEMBER);
         }
 
-        memberRepository.save(MemberMapper.dtoToEntity(memberRequest));
+        memberRepository.save(MemberMapper.dtoToEntity(memberSignupRequest));
     }
 
     @Transactional
-    public TokenInfo login(MemberRequest memberRequest) {
-        String email = memberRequest.getEmail();
-        String password = memberRequest.getPassword();
+    public TokenInfo login(MemberLoginRequest memberLoginRequest) {
+        String email = memberLoginRequest.getEmail();
+        String password = memberLoginRequest.getPassword();
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password);
