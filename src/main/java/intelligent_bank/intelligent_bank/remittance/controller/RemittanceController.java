@@ -10,14 +10,17 @@ import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidato
 import intelligent_bank.intelligent_bank.remittance.dto.RemittanceRequest;
 import intelligent_bank.intelligent_bank.remittance.service.RemittanceService;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,11 +34,20 @@ public class RemittanceController {
     @PostMapping("/remit")
     @LogExecutionTime
     public ResponseEntity<?> remit(
-            @RequestBody RemittanceRequest remittanceRequest,
+            @RequestBody @Valid RemittanceRequest remittanceRequest,
+            BindingResult bindingResult,
             Principal principal
     ) {
-        String requestBankBookNum = remittanceRequest.getBankBookNum();
-        BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
+        }
+
+        BankBook requestBank = bankBookService.getBankBookByBankBookNum(
+                remittanceRequest.getBankBookNum()
+        );
 
         if (CommonUtils.isNull(requestBank)) {
             return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
