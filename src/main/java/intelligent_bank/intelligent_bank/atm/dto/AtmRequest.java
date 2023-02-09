@@ -11,7 +11,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class AtmRequest {
 
-    @NotNull(message = "현금을 입력하세요.")
+    @NotNull(message = "금액을 입력하세요.")
     private long inputMoney;
 
     @Size(min = 13, max = 13, message = "계좌번호는 13자리입니다. 정확히 입력해주세요.")
