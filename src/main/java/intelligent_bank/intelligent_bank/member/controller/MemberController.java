@@ -1,25 +1,24 @@
 package intelligent_bank.intelligent_bank.member.controller;
 
 import intelligent_bank.intelligent_bank.jwt.TokenInfo;
-import intelligent_bank.intelligent_bank.member.dto.ChangeEmailRequest;
-import intelligent_bank.intelligent_bank.member.dto.ChangePasswordRequest;
-import intelligent_bank.intelligent_bank.member.dto.MemberRequest;
-import intelligent_bank.intelligent_bank.member.dto.MemberResponse;
+import intelligent_bank.intelligent_bank.member.dto.*;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.model.Role;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
-import intelligent_bank.intelligent_bank.member.util.MemberEmail;
+import intelligent_bank.intelligent_bank.member.validator.MemberValidator;
 import intelligent_bank.intelligent_bank.member.util.MemberMapper;
-import intelligent_bank.intelligent_bank.member.util.MemberPassword;
-import intelligent_bank.intelligent_bank.utility.CommonUtils;
+import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberValidator memberValidator;
 
     @GetMapping("/")
     public ResponseEntity<?> home() {
@@ -39,14 +39,22 @@ public class MemberController {
     }
 
     @PostMapping("/member/signup")
-    public ResponseEntity<?> signup(@RequestBody MemberRequest memberRequest) {
-        Member requestMember = memberService.getMemberEntity(memberRequest.getEmail());
-        if (MemberEmail.isDuplicateEmail(requestMember)) {
-            log.info("이메일이 중복됨.");
+    public ResponseEntity<?> signup(
+            @RequestBody @Valid MemberSignupRequest memberSignupRequest,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
+        }
+
+        if (memberValidator.isDuplicateEmail(memberSignupRequest.getEmail())) {
             return ResponseEntity.ok("중복되는 이메일이 있어 회원가입이 불가능합니다.");
         }
 
-        memberService.signup(memberRequest);
+        memberService.signup(memberSignupRequest);
         log.info("회원 가입 성공");
 
         return ResponseEntity.ok("반갑습니다. 회원가입에 성공하셨습니다.");
@@ -58,23 +66,22 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    public ResponseEntity<?> login(@RequestBody MemberRequest memberRequest) {
-        String requestEmail = memberRequest.getEmail();
-        Member foundMember = memberService.getMemberEntity(requestEmail);
-
-        if (CommonUtils.isNull(foundMember)) {
-            log.info("잘못된 이메일.");
-            return ResponseEntity.ok("회원 조회가 되지않아 로그인이 불가능합니다.");
+    public ResponseEntity<?> login(
+            @RequestBody @Valid MemberLoginRequest memberLoginRequest,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
         }
 
-        String inputPw = memberRequest.getPassword();
-        String originalPw = foundMember.getPassword();
-        if (MemberPassword.isNotMatchingPassword(inputPw, originalPw)) {
-            log.info("비밀번호가 일치하지 않음.");
-            return ResponseEntity.ok("비밀번호가 다릅니다. 다시 시도하세요.");
+        if (memberValidator.isNotRightMemberInfo(memberLoginRequest)) {
+            return ResponseEntity.ok("이메일 혹은 비밀번호가 다릅니다.\n다시 시도하세요.");
         }
 
-        TokenInfo tokenInfo = memberService.login(memberRequest);
+        TokenInfo tokenInfo = memberService.login(memberLoginRequest);
         log.info("로그인 성공");
 
         return ResponseEntity.ok(tokenInfo);
@@ -90,29 +97,23 @@ public class MemberController {
 
     @PatchMapping("/member/change-email")
     public ResponseEntity<?> changeEmail(
-            @RequestBody ChangeEmailRequest changeEmailRequest,
+            @RequestBody @Valid ChangeEmailRequest changeEmailRequest,
+            BindingResult bindingResult,
             Principal principal
     ) {
-        String requestEmail = changeEmailRequest.getEmail();
-        Member fountMember = memberService.getMemberEntity(requestEmail);
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
+        }
 
-        if (MemberEmail.isDuplicateEmail(fountMember)) {
-            log.info("이메일이 중복됨.");
-            return ResponseEntity
-                    .ok("해당 이메일이 이미 존재합니다. 다시 입력해주세요");
+        if (memberValidator.isDuplicateEmail(changeEmailRequest.getEmail())) {
+            return ResponseEntity.ok("중복되는 이메일이 있어 변경이 불가능합니다.");
         }
 
         String email = principal.getName();
-        Member member = memberService.getMemberEntity(email);
-
-        String inputPw = changeEmailRequest.getPassword();
-        String originalPw = member.getPassword();
-        if (MemberPassword.isNotMatchingPassword(inputPw, originalPw)) {
-            log.info("비밀번호 일치하지 않음.");
-            return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
-        }
-
-        memberService.updateEmail(email, requestEmail);
+        memberService.updateEmail(email, changeEmailRequest);
         log.info("이메일 변경 성공");
 
         return ResponseEntity.ok("이메일이 변경되었습니다.");
@@ -128,7 +129,7 @@ public class MemberController {
 
         String inputPw = changePasswordRequest.getOldPassword();
         String originalPw = foundMember.getPassword();
-        if (MemberPassword.isNotMatchingPassword(inputPw, originalPw)) {
+        if (MemberPasswordValidator.isNotMatchingPassword(inputPw, originalPw)) {
             log.info("비밀번호 일치하지 않음.");
             return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
@@ -149,7 +150,7 @@ public class MemberController {
         Member foundMember = memberService.getMemberEntity(email);
 
         String originalPw = foundMember.getPassword();
-        if (MemberPassword.isNotMatchingPassword(password, originalPw)) {
+        if (MemberPasswordValidator.isNotMatchingPassword(password, originalPw)) {
             log.info("비밀번호 일치하지 않음.");
             return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
