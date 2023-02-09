@@ -6,7 +6,7 @@ import intelligent_bank.intelligent_bank.atm.service.AtmService;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;
-import intelligent_bank.intelligent_bank.member.util.MemberPassword;
+import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidator;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class AtmController {
 
         String originalPassword = requestBank.getMember().getPassword();
         String inputPassword = atmRequest.getPassword();
-        if (MemberPassword.isNotMatchingPassword(inputPassword, originalPassword)) {
+        if (MemberPasswordValidator.isNotMatchingPassword(inputPassword, originalPassword)) {
             return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
         }
 
@@ -66,7 +66,7 @@ public class AtmController {
 
         String originalPassword = requestBank.getMember().getPassword();
         String inputPassword = atmRequest.getPassword();
-        if (MemberPassword.isNotMatchingPassword(inputPassword, originalPassword)) {
+        if (MemberPasswordValidator.isNotMatchingPassword(inputPassword, originalPassword)) {
             return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
         }
 

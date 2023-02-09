@@ -6,7 +6,7 @@ import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.service.MemberService;
-import intelligent_bank.intelligent_bank.member.util.MemberPassword;
+import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidator;
 import intelligent_bank.intelligent_bank.remittance.dto.RemittanceRequest;
 import intelligent_bank.intelligent_bank.remittance.service.RemittanceService;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
@@ -47,7 +47,7 @@ public class RemittanceController {
 
         Member sender = memberService.getMemberEntity(principal.getName());
         String inputPassword = remittanceRequest.getPassword();
-        if (MemberPassword.isNotMatchingPassword(inputPassword, sender.getPassword())) {
+        if (MemberPasswordValidator.isNotMatchingPassword(inputPassword, sender.getPassword())) {
             return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
         }
 

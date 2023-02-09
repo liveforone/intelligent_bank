@@ -3,7 +3,7 @@ package intelligent_bank.intelligent_bank.member.service;
 import intelligent_bank.intelligent_bank.member.dto.MemberSignupRequest;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.model.Role;
-import intelligent_bank.intelligent_bank.member.util.MemberPassword;
+import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidator;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -71,7 +71,7 @@ class MemberServiceTest {
 
         //then
         String memberPw = memberService.getMemberEntity(email).getPassword();
-        boolean notMatchingPassword = MemberPassword.isNotMatchingPassword(newPassword, memberPw);
+        boolean notMatchingPassword = MemberPasswordValidator.isNotMatchingPassword(newPassword, memberPw);
         Assertions
                 .assertThat(notMatchingPassword)
                 .isFalse();

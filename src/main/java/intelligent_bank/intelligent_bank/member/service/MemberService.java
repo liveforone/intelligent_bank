@@ -2,13 +2,14 @@ package intelligent_bank.intelligent_bank.member.service;
 
 import intelligent_bank.intelligent_bank.jwt.JwtTokenProvider;
 import intelligent_bank.intelligent_bank.jwt.TokenInfo;
+import intelligent_bank.intelligent_bank.member.dto.ChangeEmailRequest;
 import intelligent_bank.intelligent_bank.member.dto.MemberLoginRequest;
 import intelligent_bank.intelligent_bank.member.dto.MemberSignupRequest;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.member.model.Role;
 import intelligent_bank.intelligent_bank.member.repository.MemberRepository;
 import intelligent_bank.intelligent_bank.member.util.MemberMapper;
-import intelligent_bank.intelligent_bank.member.util.MemberPassword;
+import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -43,7 +44,7 @@ public class MemberService {
     @Transactional
     public void signup(MemberSignupRequest memberSignupRequest) {
         memberSignupRequest.setPassword(
-                MemberPassword.encodePassword(memberSignupRequest.getPassword())
+                MemberPasswordValidator.encodePassword(memberSignupRequest.getPassword())
         );
 
         if (Objects.equals(memberSignupRequest.getEmail(), "admin@intelligentBank.com")) {
@@ -71,13 +72,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateEmail(String oldEmail, String newEmail) {
-        memberRepository.updateEmail(oldEmail, newEmail);
+    public void updateEmail(String email, ChangeEmailRequest changeEmailRequest) {
+        String newEmail = changeEmailRequest.getEmail();
+        memberRepository.updateEmail(email, newEmail);
     }
 
     @Transactional
     public void updatePassword(Long id, String inputPassword) {
-        String newPassword = MemberPassword.encodePassword(inputPassword);
+        String newPassword = MemberPasswordValidator.encodePassword(inputPassword);
         memberRepository.updatePassword(id, newPassword);
     }
 
