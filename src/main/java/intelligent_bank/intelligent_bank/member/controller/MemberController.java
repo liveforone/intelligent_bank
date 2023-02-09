@@ -121,22 +121,27 @@ public class MemberController {
 
     @PatchMapping("/member/change-password")
     public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordRequest changePasswordRequest,
+            @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
+            BindingResult bindingResult,
             Principal principal
     ) {
-        String email = principal.getName();
-        Member foundMember = memberService.getMemberEntity(email);
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
+        }
+
+        Member foundMember = memberService.getMemberEntity(principal.getName());
 
         String inputPw = changePasswordRequest.getOldPassword();
         String originalPw = foundMember.getPassword();
         if (MemberPasswordValidator.isNotMatchingPassword(inputPw, originalPw)) {
-            log.info("비밀번호 일치하지 않음.");
             return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
 
-        Long memberId = foundMember.getId();
         String requestPw = changePasswordRequest.getNewPassword();
-        memberService.updatePassword(memberId, requestPw);
+        memberService.updatePassword(foundMember.getId(), requestPw);
         log.info("비밀번호 변경 성공");
 
         return ResponseEntity.ok("비밀번호가 변경되었습니다.");
@@ -146,12 +151,10 @@ public class MemberController {
             @RequestBody String password,
             Principal principal
     ) {
-        String email = principal.getName();
-        Member foundMember = memberService.getMemberEntity(email);
+        Member foundMember = memberService.getMemberEntity(principal.getName());
 
         String originalPw = foundMember.getPassword();
         if (MemberPasswordValidator.isNotMatchingPassword(password, originalPw)) {
-            log.info("비밀번호 일치하지 않음.");
             return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
 
@@ -164,11 +167,10 @@ public class MemberController {
 
     @GetMapping("/admin")
     public ResponseEntity<?> adminPage(Principal principal) {
-        String email = principal.getName();
-        Member foundMember = memberService.getMemberEntity(email);
+        Member foundMember = memberService.getMemberEntity(principal.getName());
 
         if (!foundMember.getAuth().equals(Role.ADMIN)) {
-            log.info("어드민 페이지 접속에 실패했습니다.");
+            log.error("어드민 페이지 접속에 실패했습니다.");
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED).build();
         }
