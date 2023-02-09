@@ -8,12 +8,16 @@ import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookStateCheck;
 import intelligent_bank.intelligent_bank.member.validator.MemberPasswordValidator;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +29,20 @@ public class AtmController {
 
     @PostMapping("/atm/deposit")
     @LogExecutionTime
-    public ResponseEntity<?> depositAtm(@RequestBody AtmRequest atmRequest) {
-        String requestBankBookNum = atmRequest.getBankBookNum();
-        BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
+    public ResponseEntity<?> depositAtm(
+            @RequestBody @Valid AtmRequest atmRequest,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
+        }
+
+        BankBook requestBank = bankBookService.getBankBookByBankBookNum(
+                atmRequest.getBankBookNum()
+        );
 
         if (CommonUtils.isNull(requestBank)) {
             return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
@@ -52,9 +67,20 @@ public class AtmController {
 
     @PostMapping("/atm/withdraw")
     @LogExecutionTime
-    public ResponseEntity<?> withdrawAtm(@RequestBody AtmRequest atmRequest) {
-        String requestBankBookNum = atmRequest.getBankBookNum();
-        BankBook requestBank = bankBookService.getBankBookByBankBookNum(requestBankBookNum);
+    public ResponseEntity<?> withdrawAtm(
+            @RequestBody @Valid AtmRequest atmRequest,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = Objects
+                    .requireNonNull(bindingResult.getFieldError())
+                    .getDefaultMessage();
+            return ResponseEntity.ok(errorMessage);
+        }
+
+        BankBook requestBank = bankBookService.getBankBookByBankBookNum(
+                atmRequest.getBankBookNum()
+        );
 
         if (CommonUtils.isNull(requestBank)) {
             return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
