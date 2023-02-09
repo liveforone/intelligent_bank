@@ -89,8 +89,7 @@ public class MemberController {
 
     @GetMapping("/member/my-page")
     public ResponseEntity<MemberResponse> myPage(Principal principal) {
-        String email = principal.getName();
-        Member member = memberService.getMemberEntity(email);
+        Member member = memberService.getMemberEntity(principal.getName());
 
         return ResponseEntity.ok(MemberMapper.dtoBuilder(member));
     }
