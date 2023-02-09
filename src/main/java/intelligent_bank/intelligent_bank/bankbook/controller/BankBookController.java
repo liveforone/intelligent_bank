@@ -1,8 +1,6 @@
 package intelligent_bank.intelligent_bank.bankbook.controller;
 
 import intelligent_bank.intelligent_bank.aop.stopwatch.LogExecutionTime;
-import intelligent_bank.intelligent_bank.bankbook.dto.BankBookRequest;
-import intelligent_bank.intelligent_bank.bankbook.dto.BankBookResponse;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.service.BankBookService;
 import intelligent_bank.intelligent_bank.bankbook.util.BankBookMapper;
