@@ -3,6 +3,7 @@ package intelligent_bank.intelligent_bank.calculate.service;
 import intelligent_bank.intelligent_bank.bankbook.model.BankBook;
 import intelligent_bank.intelligent_bank.bankbook.repository.BankBookRepository;
 import intelligent_bank.intelligent_bank.calculate.dto.CalculateResponse;
+import intelligent_bank.intelligent_bank.calculate.repository.CalculateRepository;
 import intelligent_bank.intelligent_bank.calculate.util.CalculateMapper;
 import intelligent_bank.intelligent_bank.member.model.Member;
 import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
@@ -25,18 +26,19 @@ public class CalculateService {
 
     private final BankBookRepository bankBookRepository;
     private final RecordRepository recordRepository;
+    private final CalculateRepository calculateRepository;
 
     public CalculateResponse calculateThisMonth(Member member) {
         BankBook bankBook = bankBookRepository.findOneByMember(member);
         int nowYear = CommonUtils.createNowYear();
         Month nowMonth = CommonUtils.createNowMonth();
 
-        Long sumExpense = recordRepository.calculateThisMonthExpense(
+        Long sumExpense = calculateRepository.calculateThisMonthExpense(
                 bankBook,
                 nowYear,
                 nowMonth
         );
-        Long sumIncome = recordRepository.calculateThisMonthIncome(
+        Long sumIncome = calculateRepository.calculateThisMonthIncome(
                 bankBook,
                 nowYear,
                 nowMonth
@@ -49,11 +51,11 @@ public class CalculateService {
         BankBook bankBook = bankBookRepository.findOneByMember(member);
         int nowYear = CommonUtils.createNowYear();
 
-        Long sumExpense = recordRepository.calculateThisYearExpense(
+        Long sumExpense = calculateRepository.calculateThisYearExpense(
                 bankBook,
                 nowYear
         );
-        Long sumIncome = recordRepository.calculateThisYearIncome(
+        Long sumIncome = calculateRepository.calculateThisYearIncome(
                 bankBook,
                 nowYear
         );
@@ -64,8 +66,8 @@ public class CalculateService {
     public CalculateResponse calculateTotal(Member member) {
         BankBook bankBook = bankBookRepository.findOneByMember(member);
 
-        Long sumExpense = recordRepository.calculateTotalExpense(bankBook);
-        Long sumIncome = recordRepository.calculateTotalIncome(bankBook);
+        Long sumExpense = calculateRepository.calculateTotalExpense(bankBook);
+        Long sumIncome = calculateRepository.calculateTotalIncome(bankBook);
 
         return CalculateMapper.dtoBuilder(sumExpense, sumIncome);
     }
@@ -75,11 +77,11 @@ public class CalculateService {
         BankBook bankBook = bankBookRepository.findOneByMember(member);
         int nowYear = CommonUtils.createNowYear();
 
-        Long sumExpense = recordRepository.calculateThisYearExpense(
+        Long sumExpense = calculateRepository.calculateThisYearExpense(
                 bankBook,
                 nowYear
         );
-        Long sumIncome = recordRepository.calculateThisYearIncome(
+        Long sumIncome = calculateRepository.calculateThisYearIncome(
                 bankBook,
                 nowYear
         );
