@@ -7,6 +7,7 @@
 * Spring Data Jpa & Query Dsl
 * Spring Security & Jwt
 * Spring validation
+* Spring Aop
 * Apache Commons Lang3
 * MySql
 * LomBok
