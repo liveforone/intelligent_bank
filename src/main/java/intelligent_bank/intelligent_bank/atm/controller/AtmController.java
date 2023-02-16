@@ -69,7 +69,9 @@ public class AtmController {
         atmService.depositAtm(inputMoney, requestBank);
         log.info("ATM 입금 성공");
 
-        return ResponseEntity.ok("ATM 입금에 성공하셨습니다");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("ATM 입금에 성공하셨습니다");
     }
 
     @PostMapping("/atm/withdraw")
@@ -113,6 +115,8 @@ public class AtmController {
         atmService.withdrawAtm(inputMoney, requestBank);
         log.info("ATM 출금 성공");
 
-        return ResponseEntity.ok("ATM 출금에 성공하셨습니다");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("ATM 출금에 성공하셨습니다");
     }
 }
