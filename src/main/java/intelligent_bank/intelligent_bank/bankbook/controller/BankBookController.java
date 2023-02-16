@@ -10,6 +10,7 @@ import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,9 @@ public class BankBookController {
         BankBook bankBook = bankBookService.getBankBookByMember(member);
 
         if (CommonUtils.isNull(bankBook)) {
-            return ResponseEntity.ok("통장이 없습니다. \n통장을 개설하여주세요");
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("통장이 없습니다. \n통장을 개설하여주세요");
         }
 
         return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
