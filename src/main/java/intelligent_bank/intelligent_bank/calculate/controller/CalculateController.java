@@ -8,6 +8,7 @@ import intelligent_bank.intelligent_bank.member.service.MemberService;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,12 +61,16 @@ public class CalculateController {
         Member member = memberService.getMemberEntity(email);
 
         if (!CommonUtils.createNowMonth().equals(Month.DECEMBER)) {
-            return ResponseEntity.ok("이자 신청은 12월에만 가능합니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("이자 신청은 12월에만 가능합니다.");
         }
 
         calculateService.addInterest(member);
         log.info("이자 지금 완료");
 
-        return ResponseEntity.ok("이자 지급이 완료되었습니다.");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("이자 지급이 완료되었습니다.");
     }
 }
