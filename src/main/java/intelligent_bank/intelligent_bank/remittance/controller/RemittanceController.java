@@ -13,6 +13,7 @@ import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,23 +51,31 @@ public class RemittanceController {
         );
 
         if (CommonUtils.isNull(requestBank)) {
-            return ResponseEntity.ok("존재하지 않는 통장 번호입니다.");
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("존재하지 않는 통장 번호입니다.");
         }
 
         if (BankBookStateCheck.isSuspendBankBook(requestBank)) {
-            return ResponseEntity.ok("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
         }
 
         Member sender = memberService.getMemberEntity(principal.getName());
         String inputPassword = remittanceRequest.getPassword();
         if (MemberPasswordValidator.isNotMatchingPassword(inputPassword, sender.getPassword())) {
-            return ResponseEntity.ok("비밀번호가 일치하지 않습니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("비밀번호가 일치하지 않습니다.");
         }
 
         long inputMoney = remittanceRequest.getInputMoney();
         remittanceService.remit(inputMoney, requestBank, sender);
         log.info("송금 완료");
 
-        return ResponseEntity.ok("송금 완료되었습니다.");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("송금 완료되었습니다.");
     }
 }
