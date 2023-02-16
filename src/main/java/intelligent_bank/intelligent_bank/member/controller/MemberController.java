@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,9 @@ public class MemberController {
         }
 
         if (memberValidator.isDuplicateEmail(memberSignupRequest.getEmail())) {
-            return ResponseEntity.ok("중복되는 이메일이 있어 회원가입이 불가능합니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("중복되는 이메일이 있어 회원가입이 불가능합니다.");
         }
 
         memberService.signup(memberSignupRequest);
@@ -77,14 +80,15 @@ public class MemberController {
             return ResponseEntity.ok(errorMessage);
         }
 
-        if (memberValidator.isNotRightMemberInfo(memberLoginRequest)) {
-            return ResponseEntity.ok("이메일 혹은 비밀번호가 다릅니다.\n다시 시도하세요.");
+        try {
+            TokenInfo tokenInfo = memberService.login(memberLoginRequest);
+            log.info("로그인 성공");
+            return ResponseEntity.ok(tokenInfo);
+        } catch (BadCredentialsException exception) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("이메일 혹은 비밀번호가 다릅니다.\n다시 시도하세요.");
         }
-
-        TokenInfo tokenInfo = memberService.login(memberLoginRequest);
-        log.info("로그인 성공");
-
-        return ResponseEntity.ok(tokenInfo);
     }
 
     @GetMapping("/member/my-page")
@@ -108,7 +112,9 @@ public class MemberController {
         }
 
         if (memberValidator.isDuplicateEmail(changeEmailRequest.getEmail())) {
-            return ResponseEntity.ok("중복되는 이메일이 있어 변경이 불가능합니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("중복되는 이메일이 있어 변경이 불가능합니다.");
         }
 
         String email = principal.getName();
@@ -136,7 +142,9 @@ public class MemberController {
         String inputPw = changePasswordRequest.getOldPassword();
         String originalPw = foundMember.getPassword();
         if (MemberPasswordValidator.isNotMatchingPassword(inputPw, originalPw)) {
-            return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
 
         String requestPw = changePasswordRequest.getNewPassword();
@@ -154,7 +162,9 @@ public class MemberController {
 
         String originalPw = foundMember.getPassword();
         if (MemberPasswordValidator.isNotMatchingPassword(password, originalPw)) {
-            return ResponseEntity.ok("비밀번호가 다릅니다. 다시 입력해주세요.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
 
         Long memberId = foundMember.getId();
@@ -171,7 +181,8 @@ public class MemberController {
         if (!foundMember.getAuth().equals(Role.ADMIN)) {
             log.error("어드민 페이지 접속에 실패했습니다.");
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED).build();
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("접근 권한이 없습니다.");
         }
 
         List<Member> allMembers = memberService.getAllMemberForAdmin();
