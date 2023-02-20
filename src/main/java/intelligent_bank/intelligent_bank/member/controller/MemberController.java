@@ -60,7 +60,9 @@ public class MemberController {
         memberService.signup(memberSignupRequest);
         log.info("회원 가입 성공");
 
-        return ResponseEntity.ok("반갑습니다. 회원가입에 성공하셨습니다.");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("반갑습니다. 회원가입에 성공하셨습니다.");
     }
 
     @GetMapping("/member/login")
