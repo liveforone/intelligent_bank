@@ -6,6 +6,7 @@ import intelligent_bank.intelligent_bank.record.dto.RecordRequest;
 import intelligent_bank.intelligent_bank.record.model.RecordState;
 import intelligent_bank.intelligent_bank.record.repository.RecordRepository;
 import intelligent_bank.intelligent_bank.record.util.RecordMapper;
+import intelligent_bank.intelligent_bank.record.util.RecordStatus;
 import intelligent_bank.intelligent_bank.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class AtmService {
         log.info("통장 번호 : " + requestBankBookNum + " ATM 입금 금액 : " + inputMoney);
 
         RecordRequest depositRequest = RecordRequest.builder()
-                .title("[입금] ATM")
+                .title(RecordStatus.DEPOSIT_ATM.getValue())
                 .money(inputMoney)
                 .recordState(RecordState.INCOME)
                 .bankBook(requestBank)
@@ -54,7 +55,7 @@ public class AtmService {
         log.info("통장 번호 : " + requestBankBookNum + " ATM 출금 금액 : " + inputMoney);
 
         RecordRequest withdrawRequest = RecordRequest.builder()
-                .title("[출금] ATM")
+                .title(RecordStatus.WITHDRAW_ATM.getValue())
                 .money(-inputMoney)
                 .recordState(RecordState.EXPENSE)
                 .bankBook(requestBank)
